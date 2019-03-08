@@ -64,6 +64,7 @@
                     android:inputType="text"
                     android:layout_height="wrap_content"
                     android:layout_width="match_parent"
+                    app:backgroundTint="#AA000000"
                     android:padding="10dp"
                     android:textColorHint="#cccccc" />
 
@@ -90,6 +91,7 @@
                     android:inputType="phone"
                     android:layout_height="wrap_content"
                     android:layout_width="match_parent"
+                    app:backgroundTint="#AA000000"
                     android:padding="10dp"
                     android:textColorHint="#cccccc" />
 
@@ -117,6 +119,7 @@
                     android:layout_height="wrap_content"
                     android:layout_width="match_parent"
                     android:padding="10dp"
+                    app:backgroundTint="#AA000000"
                     android:textColorHint="#cccccc" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -143,6 +146,7 @@
                     android:inputType="textPassword"
                     android:layout_height="wrap_content"
                     android:layout_width="match_parent"
+                    app:backgroundTint="#AA000000"
                     android:padding="10dp"
                     android:textColorHint="#cccccc" />
 
@@ -170,6 +174,7 @@
                     android:inputType="textPassword"
                     android:layout_height="wrap_content"
                     android:layout_width="match_parent"
+                    app:backgroundTint="#AA000000"
                     android:padding="10dp"
                     android:textColorHint="#cccccc" />
 

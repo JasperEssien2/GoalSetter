@@ -63,6 +63,7 @@
                     android:drawableStart="@drawable/ic_mail_outline_black_24dp"
                     android:drawablePadding="16dp"
                     android:inputType="textEmailAddress"
+                    app:backgroundTint="#AA000000"
                     android:padding="10dp"
                     android:textColorHint="#cccccc" />
 
@@ -91,6 +92,7 @@
                     android:drawablePadding="16dp"
                     android:inputType="textPassword"
                     android:padding="10dp"
+                    app:backgroundTint="#AA000000"
                     android:textColorHint="#cccccc" />
 
             </com.google.android.material.textfield.TextInputLayout>
