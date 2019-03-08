@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Goal Setter</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="signup_header">Sign up to enjoy</string>
+    <string name="title_login">Login</string>
+    <string name="title_password">Password</string>
+    <string name="keep_me_logged_in">Keep me logged in</string>
+    <string name="title_forgot_password">Forgot password</string>
+    <string name="title_confirm_password">Confirm password</string>
+    <string name="email_address">Email Address</string>
+    <string name="username">Username</string>
+    <string name="contact">Contact</string>
+</resources>
