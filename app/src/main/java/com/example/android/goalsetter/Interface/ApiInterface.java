@@ -1,5 +1,6 @@
 package com.example.android.goalsetter.Interface;
 
+import com.example.android.goalsetter.Models.ProfileModelData;
 import com.example.android.goalsetter.Models.RegisterResponseDataModel;
 import com.example.android.goalsetter.Models.User;
 
@@ -9,11 +10,13 @@ import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 
 public interface ApiInterface {
 
-    String BASE_URL = "https://goaltickapp.herokuapp.com/";
+    String BASE_URL = "https://goalsetterapi.herokuapp.com/";
 
     @POST("api/register")
     @FormUrlEncoded
@@ -28,8 +31,14 @@ public interface ApiInterface {
     @FormUrlEncoded
     Call<RegisterResponseDataModel> login(@Field("email") String email, @Field("password") String password);
 
-    @GET("api/dashboard")
-    Call<User> dashboard(@Header("token") String token);
+    @GET("api/profile")
+    Call<ProfileModelData> profile(@Header("Authorization") String token);
+
+    @PUT("api/profile/edit")
+    @Headers("Content-Type: application/x-www-form-urlencoded")
+    @FormUrlEncoded
+    Call<ProfileModelData> updateProfile(@Header("Authorization") String token,
+                                         @Field("user") User user);
 
     @POST("api/logout")
     Call<Boolean> logout();

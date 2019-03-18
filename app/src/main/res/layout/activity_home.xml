@@ -1,8 +1,238 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".Activities.HomeActivity">
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/transparent"
+        android:orientation="vertical">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:title="Home">
+
+            </androidx.appcompat.widget.Toolbar>
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:background="#cc000000"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            tools:context=".MainActivity">
+
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:padding="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <FrameLayout
+                        android:id="@+id/frameLayout"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="8dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/user_profile_image"
+                            android:layout_width="150dp"
+                            android:layout_height="150dp"
+
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/place_holder"
+                            app:civ_border_color="@color/colorPrimary"
+                            app:civ_border_width="2dp"
+
+                            app:civ_circle_background_color="#cccccc"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.538"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <ImageView
+                            android:id="@+id/school_owner_settings_image_picker"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_gravity="bottom|end"
+                            android:layout_marginBottom="6dp"
+                            android:background="@drawable/circle_background"
+                            android:backgroundTint="@color/colorPrimary"
+                            android:elevation="6dp"
+                            android:padding="6dp"
+                            android:src="@drawable/ic_add_photo" />
+
+                    </FrameLayout>
+
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/user_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@null"
+                        android:drawableStart="@drawable/ic_person_outline_color_primary_24dp"
+                        android:drawablePadding="16dp"
+                        android:drawableTint="@color/colorPrimary"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:textColor="#ffffff"
+                        android:textSize="24sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/frameLayout"
+                        tools:text="Jasper Essien" />
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/user_email"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@null"
+                        android:drawableStart="@drawable/ic_mail_outline_color_primary_24dp"
+                        android:drawablePadding="16dp"
+                        android:drawableTint="@color/colorPrimary"
+                        android:gravity="center"
+                        android:inputType="textEmailAddress"
+                        android:padding="2dp"
+                        android:textColor="#ffffff"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/user_name"
+                        tools:text="JasperEssien2@gmail.com" />
+
+                    <EditText
+                        android:id="@+id/user_contact"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@null"
+                        android:drawableStart="@drawable/ic_phone_color_primary_24dp"
+                        android:drawablePadding="16dp"
+                        android:drawableTint="@color/colorPrimary"
+                        android:gravity="center"
+                        android:inputType="phone"
+                        android:padding="2dp"
+                        android:textColor="#ffffff"
+                        android:textSize="18sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/user_email"
+                        tools:text="09027818788" />
+
+                    <!--<EditText-->
+                    <!--android:id="@+id/user_account_type"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginStart="8dp"-->
+                    <!--android:layout_marginTop="4dp"-->
+                    <!--android:layout_marginEnd="8dp"-->
+                    <!--android:background="@null"-->
+                    <!--android:drawablePadding="16dp"-->
+                    <!--android:gravity="center"-->
+                    <!--android:padding="2dp"-->
+                    <!--android:text="Account Type: Team"-->
+                    <!--android:textSize="18sp"-->
+                    <!--app:layout_constraintEnd_toEndOf="parent"-->
+                    <!--app:layout_constraintStart_toStartOf="parent"-->
+                    <!--app:layout_constraintTop_toBottomOf="@+id/user_contact" />-->
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </FrameLayout>
+
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.58" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="8dp"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/guideline4">
+
+                <Button
+                    android:id="@+id/add_task_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/home_button_background"
+                    android:text="Add Task"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+                    android:textColor="@color/colorPrimary"
+                    android:textStyle="bold"
+                    tools:layout_editor_absoluteX="114dp"
+                    tools:layout_editor_absoluteY="439dp" />
+
+                <Button
+                    android:id="@+id/add_users_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/home_button_background"
+                    android:text="Add Users"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+                    android:textColor="@color/colorPrimary"
+                    android:textStyle="bold"
+                    tools:layout_editor_absoluteX="174dp"
+                    tools:layout_editor_absoluteY="541dp" />
+
+                <Button
+                    android:id="@+id/edit_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/home_button_background"
+                    android:text="Edit Profile"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+                    android:textColor="@color/colorPrimary"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+</layout>

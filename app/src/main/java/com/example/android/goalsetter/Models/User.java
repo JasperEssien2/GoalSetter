@@ -29,6 +29,8 @@ public class User implements Parcelable {
     private String password;
     @SerializedName("password_confirmation")
     private String confirmPassword;
+    @SerializedName("user_image")
+    private String userImage;
 
     public User() {
 
@@ -49,6 +51,7 @@ public class User implements Parcelable {
         contact = in.readString();
         password = in.readString();
         confirmPassword = in.readString();
+        userImage = in.readString();
     }
 
     public String getName() {
@@ -111,6 +114,15 @@ public class User implements Parcelable {
         parcel.writeString(contact);
         parcel.writeString(password);
         parcel.writeString(confirmPassword);
+        parcel.writeString(userImage);
+    }
+
+    public String getUserImage() {
+        return userImage;
+    }
+
+    public void setUserImage(String userImage) {
+        this.userImage = userImage;
     }
 }
 

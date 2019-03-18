@@ -3,6 +3,7 @@ package com.example.android.goalsetter.Interface;
 import android.util.Log;
 
 import com.example.android.goalsetter.ApiClient;
+import com.example.android.goalsetter.Models.ProfileModelData;
 import com.example.android.goalsetter.Models.RegisterResponseDataModel;
 import com.example.android.goalsetter.Models.User;
 
@@ -25,6 +26,11 @@ public class ApiCalls {
                 .create(ApiInterface.class);
     }
 
+    /**
+     * This method calls the api that registers a user
+     *
+     * @param user type User containing user details of the user
+     */
     public void register(User user) {
 //        String accountType = "";
 //        if (user.getAccount_type() == company)
@@ -60,6 +66,12 @@ public class ApiCalls {
                 });
     }
 
+    /**
+     * This method is called to call the api that login users
+     *
+     * @param email    of the user (type string)
+     * @param password of the user (type string)
+     */
     public void login(String email, String password) {
         apiInterface.login(email, password)
                 .enqueue(new Callback<RegisterResponseDataModel>() {
@@ -81,18 +93,45 @@ public class ApiCalls {
                 });
     }
 
-    public void dashBoard(String token) {
-        apiInterface.dashboard(token)
-                .enqueue(new Callback<User>() {
+    /**
+     * Methood to call the api that gets the user's profile details
+     *
+     * @param token token of the user to be passed to header of the api
+     */
+    public void profile(final String token) {
+        apiInterface.profile(token)
+                .enqueue(new Callback<ProfileModelData>() {
                     @Override
-                    public void onResponse(Call<User> call, Response<User> response) {
-                        User user = response.body();
-                        callback.dashBoard(user);
+                    public void onResponse(Call<ProfileModelData> call, Response<ProfileModelData> response) {
+//                        User user = response.body();
+                        Log.e(TAG, "onResponse() --------------- " + response.raw().toString());
+                        Log.e(TAG, "token --------------- " + token);
+                        if (response.body() != null)
+                            callback.profile(response.body().getModelResponse());
                     }
 
                     @Override
-                    public void onFailure(Call<User> call, Throwable t) {
+                    public void onFailure(Call<ProfileModelData> call, Throwable t) {
+                        Log.e(TAG, "onFailure() --------------- " + t.getMessage());
+                    }
+                });
+    }
 
+    public void updateProfile(final String token, final User user) {
+        apiInterface.updateProfile(token, user)
+                .enqueue(new Callback<ProfileModelData>() {
+                    @Override
+                    public void onResponse(Call<ProfileModelData> call, Response<ProfileModelData> response) {
+//                        User user = response.body();
+                        Log.e(TAG, "onResponse() --------------- " + response.raw().toString());
+                        Log.e(TAG, "token --------------- " + token);
+                        if (response.body() != null)
+                            callback.updateProfile(response.body().getModelResponse());
+                    }
+
+                    @Override
+                    public void onFailure(Call<ProfileModelData> call, Throwable t) {
+                        Log.e(TAG, "onFailure() --------------- " + t.getMessage());
                     }
                 });
     }

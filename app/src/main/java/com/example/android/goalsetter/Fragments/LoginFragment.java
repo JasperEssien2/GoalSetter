@@ -14,6 +14,7 @@ import com.example.android.goalsetter.Constant.BundleConstants;
 import com.example.android.goalsetter.Interface.ApiCalls;
 import com.example.android.goalsetter.Interface.ApiCallsCallback;
 import com.example.android.goalsetter.Interface.AuthenticationViewPagerCallbacks;
+import com.example.android.goalsetter.Models.ProfileModelData;
 import com.example.android.goalsetter.Models.RegisterResponseDataModel;
 import com.example.android.goalsetter.Models.User;
 import com.example.android.goalsetter.R;
@@ -165,7 +166,12 @@ public class LoginFragment extends Fragment implements ApiCallsCallback {
     }
 
     @Override
-    public void dashBoard(User user) {
+    public void profile(ProfileModelData.ProfileModelResponse profileModelResponse) {
+
+    }
+
+    @Override
+    public void updateProfile(ProfileModelData.ProfileModelResponse profileModelResponse) {
 
     }
 }

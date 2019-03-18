@@ -1,5 +1,6 @@
 package com.example.android.goalsetter.Interface;
 
+import com.example.android.goalsetter.Models.ProfileModelData;
 import com.example.android.goalsetter.Models.RegisterResponseDataModel;
 import com.example.android.goalsetter.Models.User;
 
@@ -20,9 +21,16 @@ public interface ApiCallsCallback {
     void login(RegisterResponseDataModel token);
 
     /**
-     * Call back when dashBoard api call is done
+     * Call back when profile api call is done
      *
-     * @param user an instance of the user depending on the header token
+     * @param profileModelResponse an instance of the user depending on the header token
      */
-    void dashBoard(User user);
+    void profile(ProfileModelData.ProfileModelResponse profileModelResponse);
+
+    /**
+     * This is called when update profile api call is done
+     *
+     * @param profileModelResponse
+     */
+    void updateProfile(ProfileModelData.ProfileModelResponse profileModelResponse);
 }

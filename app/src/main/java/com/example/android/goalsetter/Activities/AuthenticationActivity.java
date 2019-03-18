@@ -1,5 +1,6 @@
 package com.example.android.goalsetter.Activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -9,6 +10,7 @@ import com.example.android.goalsetter.Constant.BundleConstants;
 import com.example.android.goalsetter.Interface.ApiCalls;
 import com.example.android.goalsetter.Interface.ApiCallsCallback;
 import com.example.android.goalsetter.Interface.AuthenticationViewPagerCallbacks;
+import com.example.android.goalsetter.Models.ProfileModelData;
 import com.example.android.goalsetter.Models.RegisterResponseDataModel;
 import com.example.android.goalsetter.Models.User;
 import com.example.android.goalsetter.R;
@@ -28,6 +30,15 @@ public class AuthenticationActivity extends AppCompatActivity implements Authent
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_authentication);
+        String token = getSharedPreferences("token", Context.MODE_PRIVATE)
+                .getString("token", null);
+        if (token != null) {
+            Intent intent = new Intent(AuthenticationActivity.this, HomeActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.putExtra(BundleConstants.TOKEN_BUNDLE, token);
+            startActivity(intent);
+        }
+
         binding
                 .authenticationViewPager
                 .setAdapter(new AuthenticationViewPagerAdapter(getSupportFragmentManager(), this));
@@ -60,15 +71,25 @@ public class AuthenticationActivity extends AppCompatActivity implements Authent
 
     @Override
     public void login(RegisterResponseDataModel token) {
-        if (token != null)
-            apiCalls.dashBoard(token.getRegisterResponseModel().getToken());
+        if (token != null) {
+//            apiCalls.profile(token.getRegisterResponseModel().getToken());
+            Intent intent = new Intent(AuthenticationActivity.this, HomeActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.putExtra(BundleConstants.TOKEN_BUNDLE, token.getRegisterResponseModel().getToken());
+            startActivity(intent);
+        }
     }
 
     @Override
-    public void dashBoard(User user) {
-        Intent intent = new Intent(AuthenticationActivity.this, HomeActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.putExtra(BundleConstants.USER_BUNDLE, user);
-        startActivity(intent);
+    public void profile(ProfileModelData.ProfileModelResponse profileModelResponse) {
+//        Intent intent = new Intent(AuthenticationActivity.this, HomeActivity.class);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+//        intent.putExtra(BundleConstants.USER_BUNDLE, profileModelResponse);
+//        startActivity(intent);
+    }
+
+    @Override
+    public void updateProfile(ProfileModelData.ProfileModelResponse profileModelResponse) {
+
     }
 }

@@ -1,7 +1,6 @@
 package com.example.android.goalsetter.Fragments;
 
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,6 +14,7 @@ import com.example.android.goalsetter.Constant.BundleConstants;
 import com.example.android.goalsetter.Interface.ApiCalls;
 import com.example.android.goalsetter.Interface.ApiCallsCallback;
 import com.example.android.goalsetter.Interface.AuthenticationViewPagerCallbacks;
+import com.example.android.goalsetter.Models.ProfileModelData;
 import com.example.android.goalsetter.Models.RegisterResponseDataModel;
 import com.example.android.goalsetter.Models.User;
 import com.example.android.goalsetter.R;
@@ -169,11 +169,6 @@ public class SignUpFragment extends Fragment implements ApiCallsCallback {
         disableProgressbar();
         if (userDetail != null) {
 
-            getActivity().getSharedPreferences("token", Context.MODE_PRIVATE)
-                    .edit()
-                    .putString("token", token)
-                    .apply();
-
             Intent intent = new Intent(getActivity(), HomeActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.putExtra(BundleConstants.USER_BUNDLE, userDetail);
@@ -185,11 +180,16 @@ public class SignUpFragment extends Fragment implements ApiCallsCallback {
     @Override
     public void login(RegisterResponseDataModel token) {
         if (token != null)
-            apiCalls.dashBoard(token.getRegisterResponseModel().getToken());
+            apiCalls.profile(token.getRegisterResponseModel().getToken());
     }
 
     @Override
-    public void dashBoard(User user) {
+    public void profile(ProfileModelData.ProfileModelResponse profileModelResponse) {
+
+    }
+
+    @Override
+    public void updateProfile(ProfileModelData.ProfileModelResponse profileModelResponse) {
 
     }
 }
