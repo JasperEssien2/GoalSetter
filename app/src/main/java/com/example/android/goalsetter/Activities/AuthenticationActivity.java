@@ -6,8 +6,8 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import com.example.android.goalsetter.Adapters.AuthenticationViewPagerAdapter;
+import com.example.android.goalsetter.ApiCalls;
 import com.example.android.goalsetter.Constant.BundleConstants;
-import com.example.android.goalsetter.Interface.ApiCalls;
 import com.example.android.goalsetter.Interface.ApiCallsCallback;
 import com.example.android.goalsetter.Interface.AuthenticationViewPagerCallbacks;
 import com.example.android.goalsetter.Models.ProfileModelData;
@@ -90,6 +90,11 @@ public class AuthenticationActivity extends AppCompatActivity implements Authent
 
     @Override
     public void updateProfile(ProfileModelData.ProfileModelResponse profileModelResponse) {
+
+    }
+
+    @Override
+    public void imageUploaded() {
 
     }
 }

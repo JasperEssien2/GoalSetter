@@ -1,12 +1,23 @@
-package com.example.android.goalsetter.Interface;
+package com.example.android.goalsetter;
 
+import android.app.Activity;
+import android.database.Cursor;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.util.Log;
 
-import com.example.android.goalsetter.ApiClient;
+import com.example.android.goalsetter.Interface.ApiCallsCallback;
+import com.example.android.goalsetter.Interface.ApiInterface;
 import com.example.android.goalsetter.Models.ProfileModelData;
 import com.example.android.goalsetter.Models.RegisterResponseDataModel;
 import com.example.android.goalsetter.Models.User;
 
+import java.io.File;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -117,6 +128,12 @@ public class ApiCalls {
                 });
     }
 
+    /**
+     * Method call to update profile of user
+     *
+     * @param token a string of the user's token
+     * @param user  user details
+     */
     public void updateProfile(final String token, final User user) {
         apiInterface.updateProfile(token, user)
                 .enqueue(new Callback<ProfileModelData>() {
@@ -134,5 +151,54 @@ public class ApiCalls {
                         Log.e(TAG, "onFailure() --------------- " + t.getMessage());
                     }
                 });
+    }
+
+
+    public void uploadImage(Activity activity, Uri mediaPath, String token) {
+        String selectedImagePath = null;
+        Uri selectedImageUri = mediaPath;
+        Cursor cursor = activity.getContentResolver().query(
+                selectedImageUri, null, null, null, null);
+        if (cursor == null) {
+            selectedImagePath = selectedImageUri.getPath();
+        } else {
+            cursor.moveToFirst();
+            int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+            selectedImagePath = cursor.getString(idx);
+        }
+
+        // Map is used to multipart the file using okhttp3.RequestBody
+        File file = new File(selectedImagePath);
+
+        // Parsing any Media type file
+        RequestBody requestFile =
+                RequestBody.create(MediaType.parse("multipart/form-data"), file);
+
+// MultipartBody.Part is used to send also the actual file name
+        MultipartBody.Part body =
+                MultipartBody.Part.createFormData("user_image", file.getName(), requestFile);
+
+        apiInterface.updateProfileImage(token, body).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Log.e(TAG, "onResponse() --------------- " + response.raw().toString());
+                if (response != null) {
+                    callback.imageUploaded();
+//                    if (requestBody.getSuccess()) {
+//                        Toast.makeText(getApplicationContext(), serverResponse.getMessage(),Toast.LENGTH_SHORT).show();
+//                    } else {
+//                        Toast.makeText(getApplicationContext(), serverResponse.getMessage(),Toast.LENGTH_SHORT).show();
+//                    }
+                } else {
+//                    assert serverResponse != null;
+//                    Log.v("Response", serverResponse.toString());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.e(TAG, "onFailure() --------------- " + t.getMessage());
+            }
+        });
     }
 }

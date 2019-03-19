@@ -1,6 +1,7 @@
 package com.example.android.goalsetter.Activities;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -9,7 +10,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.example.android.goalsetter.Interface.ApiCalls;
+import com.example.android.goalsetter.ApiCalls;
 import com.example.android.goalsetter.Interface.ApiCallsCallback;
 import com.example.android.goalsetter.Models.ProfileModelData;
 import com.example.android.goalsetter.Models.RegisterResponseDataModel;
@@ -24,6 +25,7 @@ import static com.example.android.goalsetter.Constant.BundleConstants.TOKEN_BUND
 
 public class HomeActivity extends AppCompatActivity implements ApiCallsCallback {
 
+    private static final int SELECT_PHOTO = 44;
     private ApiCalls apiCalls = new ApiCalls(this);
 
     private ActivityHomeBinding binding;
@@ -60,8 +62,45 @@ public class HomeActivity extends AppCompatActivity implements ApiCallsCallback 
                 }
             }
         });
+        binding.schoolOwnerSettingsImagePicker.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String buttonText = binding.editButton.getText().toString();
+
+//                if (buttonText.toLowerCase().equals("Edit Profile".toLowerCase())) {
+//                    binding.editButton.setText("Save Changes");
+                imagePicker();
+//                } else {
+//                    binding.editButton.setText("Edit Profile");
+//                    Toast.makeText(HomeActivity.this, "Click the edit button", Toast.LENGTH_SHORT).show();
+//                }
+
+            }
+        });
         binding.getRoot();
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case SELECT_PHOTO:
+                if (resultCode == RESULT_OK) {
+                    Uri imageUri = data.getData();
+                    if (imageUri != null) {
+                        Glide
+                                .with(this)
+                                .load(imageUri)
+                                .into(binding.userProfileImage);
+                        apiCalls.uploadImage(this, imageUri, token);
+                    } else
+                        Toast.makeText(this, "Error getting image", Toast.LENGTH_SHORT).show();
+
+                }
+                break;
+        }
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -85,6 +124,13 @@ public class HomeActivity extends AppCompatActivity implements ApiCallsCallback 
         }
         return super.onOptionsItemSelected(item);
     }
+
+    private void imagePicker() {
+        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+        photoPickerIntent.setType("image/*");
+        startActivityForResult(photoPickerIntent, SELECT_PHOTO);
+    }
+
 
     private void updateProfile() {
         if (user != null && token != null) {
@@ -115,6 +161,11 @@ public class HomeActivity extends AppCompatActivity implements ApiCallsCallback 
             setUpViewWithData(profileModelResponse);
             Toast.makeText(this, "Profile Updated Succesfully", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public void imageUploaded() {
+        apiCalls.profile(token);
     }
 
     /**

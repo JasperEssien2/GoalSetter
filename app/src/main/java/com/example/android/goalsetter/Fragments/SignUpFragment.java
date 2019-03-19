@@ -10,8 +10,8 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.android.goalsetter.Activities.HomeActivity;
+import com.example.android.goalsetter.ApiCalls;
 import com.example.android.goalsetter.Constant.BundleConstants;
-import com.example.android.goalsetter.Interface.ApiCalls;
 import com.example.android.goalsetter.Interface.ApiCallsCallback;
 import com.example.android.goalsetter.Interface.AuthenticationViewPagerCallbacks;
 import com.example.android.goalsetter.Models.ProfileModelData;
@@ -190,6 +190,11 @@ public class SignUpFragment extends Fragment implements ApiCallsCallback {
 
     @Override
     public void updateProfile(ProfileModelData.ProfileModelResponse profileModelResponse) {
+
+    }
+
+    @Override
+    public void imageUploaded() {
 
     }
 }

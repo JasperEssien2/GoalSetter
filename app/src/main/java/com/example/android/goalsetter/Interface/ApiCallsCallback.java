@@ -33,4 +33,6 @@ public interface ApiCallsCallback {
      * @param profileModelResponse
      */
     void updateProfile(ProfileModelData.ProfileModelResponse profileModelResponse);
+
+    void imageUploaded();
 }

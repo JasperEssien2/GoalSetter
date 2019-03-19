@@ -4,6 +4,8 @@ import com.example.android.goalsetter.Models.ProfileModelData;
 import com.example.android.goalsetter.Models.RegisterResponseDataModel;
 import com.example.android.goalsetter.Models.User;
 
+import okhttp3.MultipartBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
@@ -11,8 +13,10 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Part;
 
 public interface ApiInterface {
 
@@ -39,6 +43,11 @@ public interface ApiInterface {
     @FormUrlEncoded
     Call<ProfileModelData> updateProfile(@Header("Authorization") String token,
                                          @Field("user") User user);
+
+
+    @Multipart
+    @POST("api/upload")
+    Call<ResponseBody> updateProfileImage(@Header("Authorization") String token, @Part MultipartBody.Part file);
 
     @POST("api/logout")
     Call<Boolean> logout();
