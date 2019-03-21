@@ -20,12 +20,14 @@ import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Part;
+import retrofit2.http.Path;
 
 public interface ApiInterface {
 
     String BASE_URL = "https://goalsetterapi.herokuapp.com/";
 
     @POST("api/register")
+    @Headers("Content-Type: application/x-www-form-urlencoded")
     @FormUrlEncoded
     Call<RegisterResponseDataModel> register(@Field("name") String name, @Field("email") String email,
                                              @Field("phone_number") String contact, @Field("account_type") String accountType,
@@ -60,6 +62,14 @@ public interface ApiInterface {
                                    @Field("title") String title, @Field("description") String description,
                                    @Field("begin_date") String begin_date, @Field("due_date") String due_date,
                                    @Field("level") String level);
+
+    @PUT("api/goals/{id}/edit")
+    @Headers("Content-Type: application/x-www-form-urlencoded")
+    @FormUrlEncoded
+    Call<GoalModelData> editGoal(@Header("Authorization") String token,
+                                 @Path("id") int id, @Field("title") String title,
+                                 @Field("description") String description, @Field("begin_date") String begin_date,
+                                 @Field("due_date") String due_date, @Field("level") String level);
 
     @POST("api/goals/create")
     @Headers("Content-Type: application/x-www-form-urlencoded")

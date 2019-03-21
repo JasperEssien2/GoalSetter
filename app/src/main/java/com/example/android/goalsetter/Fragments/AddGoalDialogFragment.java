@@ -22,6 +22,9 @@ public class AddGoalDialogFragment extends DialogFragment implements AdapterView
 
     private String token;
     private ApiCalls apiCalls;
+    private boolean isEdit;
+    @Nullable
+    private Goal goal;
     private ItemAddGoalBinding binding;
     private String levels;
 
@@ -32,21 +35,27 @@ public class AddGoalDialogFragment extends DialogFragment implements AdapterView
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
                 R.array.levels_array, android.R.layout.simple_spinner_item);
+
         // Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         setAllErrorNull();
         // Apply the adapter to the spinner
         binding.levelSpinner.setAdapter(adapter);
         binding.levelSpinner.setOnItemSelectedListener(this);
+        if (isEdit && goal != null)
+            bindViewWithData(goal);
         getDialog().getWindow().setBackgroundDrawableResource(R.drawable.curve_background);
         binding.addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 binding.addButton.setEnabled(false);
                 binding.progress.setVisibility(View.VISIBLE);
+                setAllErrorNull();
                 if (validateField() == 0)
-                    addGoal();
-                else setAllErrorNull();
+                    if (!isEdit)
+                        addGoal();
+                    else if (goal != null) apiCalls.editGoal(token, goal);
+//                else setAllErrorNull();
             }
         });
         return binding.getRoot();
@@ -66,6 +75,14 @@ public class AddGoalDialogFragment extends DialogFragment implements AdapterView
             apiCalls.addGoal(token, goal);
     }
 
+    private void bindViewWithData(Goal goal) {
+        binding.title.setText(goal.getTitle());
+        binding.decription.setText(goal.getDescription());
+        binding.startTime.setText(goal.getStartTime());
+        binding.dueTime.setText(goal.getDueTime());
+        binding.levelSpinner.setPrompt(goal.getLevel());
+    }
+
 
     private void setAllErrorNull() {
         binding.title.setError(null);
@@ -82,14 +99,19 @@ public class AddGoalDialogFragment extends DialogFragment implements AdapterView
     private int validateField() {
         int errorCount = 0;
 
-        if (getStringFromEdittext(binding.title).isEmpty())
+        if (getStringFromEdittext(binding.title).isEmpty()) {
+            binding.title.setError("Empty Field");
             errorCount++;
-        else if (getStringFromEdittext(binding.decription).isEmpty())
+        } else if (getStringFromEdittext(binding.decription).isEmpty()) {
+            binding.title.setError("Empty Field");
             errorCount++;
-        else if (getStringFromEdittext(binding.dueTime).isEmpty())
+        } else if (getStringFromEdittext(binding.dueTime).isEmpty()) {
+            binding.title.setError("Empty Field");
             errorCount++;
-        else if (getStringFromEdittext(binding.startTime).isEmpty())
+        } else if (getStringFromEdittext(binding.startTime).isEmpty()) {
+            binding.title.setError("Empty Field");
             errorCount++;
+        }
         return errorCount;
     }
 
@@ -110,10 +132,13 @@ public class AddGoalDialogFragment extends DialogFragment implements AdapterView
      *
      * @param token
      * @param apiCalls
+     * @param isEdit
      */
-    public void initApiCalls(String token, ApiCalls apiCalls) {
+    public void initApiCalls(String token, ApiCalls apiCalls, boolean isEdit, @Nullable Goal goal) {
         this.token = token;
         this.apiCalls = apiCalls;
+        this.isEdit = isEdit;
+        this.goal = goal;
     }
 
     @Override

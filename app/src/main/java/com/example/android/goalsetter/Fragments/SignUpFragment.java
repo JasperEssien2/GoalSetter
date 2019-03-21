@@ -1,6 +1,7 @@
 package com.example.android.goalsetter.Fragments;
 
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,9 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.example.android.goalsetter.Activities.HomeActivity;
 import com.example.android.goalsetter.ApiCalls;
-import com.example.android.goalsetter.Constant.BundleConstants;
 import com.example.android.goalsetter.Interface.ApiCallsCallback;
 import com.example.android.goalsetter.Interface.AuthenticationViewPagerCallbacks;
 import com.example.android.goalsetter.Models.ProfileModelData;
@@ -23,6 +22,7 @@ import com.example.android.goalsetter.R;
 import com.example.android.goalsetter.Validation;
 import com.example.android.goalsetter.databinding.FragmentSignUpBinding;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
@@ -179,10 +179,21 @@ public class SignUpFragment extends Fragment implements ApiCallsCallback, Adapte
         disableProgressbar();
         if (userDetail != null) {
 
-            Intent intent = new Intent(getActivity(), HomeActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.putExtra(BundleConstants.USER_BUNDLE, userDetail);
-            startActivity(intent);
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setTitle("Confirm Email")
+                    .setMessage("Thanks for signing up, A confirmation link has been sent to your email, please confirm, then return and log in")
+                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            Intent intent = getActivity().getPackageManager().getLaunchIntentForPackage("com.google.android.gm");
+                            startActivity(intent);
+                        }
+                    });
+            builder.create().show();
+//            Intent intent = new Intent(getActivity(), HomeActivity.class);
+//            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+//            intent.putExtra(BundleConstants.USER_BUNDLE, userDetail);
+//            startActivity(intent);
         } else
             Toast.makeText(getActivity(), "Sign up not succesful, try again", Toast.LENGTH_SHORT).show();
     }

@@ -44,6 +44,7 @@ public class GoalActivity extends AppCompatActivity implements GoalsApiCallback 
         if (getIntent() != null && getIntent().hasExtra(BundleConstants.TOKEN_BUNDLE)) {
             token = getIntent().getStringExtra(BundleConstants.TOKEN_BUNDLE);
         }
+        adapter.setEditDialogFragment(dialogFragment, token, apiCalls);
         model.getList(apiCalls, token)
                 .observe(this, new Observer<List<Goal>>() {
                     @Override
@@ -59,7 +60,7 @@ public class GoalActivity extends AppCompatActivity implements GoalsApiCallback 
         binding.addTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dialogFragment.initApiCalls(token, apiCalls);
+                dialogFragment.initApiCalls(token, apiCalls, false, null);
                 dialogFragment.show(getSupportFragmentManager(), null);
             }
         });
@@ -92,11 +93,12 @@ public class GoalActivity extends AppCompatActivity implements GoalsApiCallback 
 
     @Override
     public void goalAdded(GoalModelData.GoalModelResponse modelResponse) {
-        if (modelResponse != null)
+        if (modelResponse != null) {
             dialogFragment.dismiss();
-        else dialogFragment.addingGoalFailed();
-        Toast.makeText(this, "Goal Added", Toast.LENGTH_SHORT).show();
-        apiCalls.getGoals(token);
+            Toast.makeText(this, "Goal Added", Toast.LENGTH_SHORT).show();
+            apiCalls.getGoals(token);
+        } else dialogFragment.addingGoalFailed();
+
     }
 
     @Override
@@ -113,6 +115,12 @@ public class GoalActivity extends AppCompatActivity implements GoalsApiCallback 
 
     @Override
     public void goalListEdited(boolean isSuccessful) {
-
+        if (isSuccessful) {
+            apiCalls.getGoals(token);
+            dialogFragment.dismiss();
+        } else {
+            Toast.makeText(this, "Edit Failed", Toast.LENGTH_SHORT).show();
+            dialogFragment.addingGoalFailed();
+        }
     }
 }

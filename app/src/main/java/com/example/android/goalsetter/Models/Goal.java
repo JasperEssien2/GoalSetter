@@ -31,6 +31,8 @@ public class Goal implements Parcelable {
     private String dueTime;
     @SerializedName("level")
     private String level;
+    @SerializedName("id")
+    private int id;
 
     public Goal(String title, String description, String level, String startTime, String dueTime) {
 
@@ -47,6 +49,7 @@ public class Goal implements Parcelable {
         level = in.readString();
         startTime = in.readString();
         dueTime = in.readString();
+        id = in.readInt();
     }
 
     public Goal() {
@@ -105,5 +108,14 @@ public class Goal implements Parcelable {
         parcel.writeString(level);
         parcel.writeString(startTime);
         parcel.writeString(dueTime);
+        parcel.writeInt(id);
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

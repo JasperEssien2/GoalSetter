@@ -111,6 +111,28 @@
                         android:orientation="vertical"
                         app:layout_constraintGuide_percent="0.5" />
                 </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end|bottom"
+                    android:layout_margin="8dp">
+
+                    <ImageButton
+                        android:id="@+id/edit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:src="@drawable/ic_edit" />
+
+                    <ImageButton
+                        android:id="@+id/delete"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:background="@null"
+                        android:src="@drawable/ic_delete" />
+                </LinearLayout>
             </FrameLayout>
         </LinearLayout>
 

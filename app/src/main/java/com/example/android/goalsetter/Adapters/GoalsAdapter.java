@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.android.goalsetter.ApiCalls;
+import com.example.android.goalsetter.Fragments.AddGoalDialogFragment;
 import com.example.android.goalsetter.Models.Goal;
 import com.example.android.goalsetter.R;
 import com.example.android.goalsetter.databinding.HomeItemTaskBinding;
@@ -15,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,6 +30,9 @@ public class GoalsAdapter extends RecyclerView.Adapter<GoalsAdapter.GoalsViewHol
     private List<Goal> goals = new ArrayList<>();
     private HomeItemTaskBinding itemHomeTaskBinding;
     private ItemGoalBinding itemGoalBinding;
+    private AddGoalDialogFragment addGoalDialogFragment;
+    private String token;
+    private ApiCalls apiCalls;
 
     public GoalsAdapter(boolean isHome, Activity activity, List<Goal> goals) {
         super();
@@ -35,6 +41,12 @@ public class GoalsAdapter extends RecyclerView.Adapter<GoalsAdapter.GoalsViewHol
         this.goals = goals;
     }
 
+    public void setEditDialogFragment(AddGoalDialogFragment addGoalDialogFragment, String token, ApiCalls apiCalls) {
+
+        this.addGoalDialogFragment = addGoalDialogFragment;
+        this.token = token;
+        this.apiCalls = apiCalls;
+    }
 
     @NonNull
     @Override
@@ -46,6 +58,7 @@ public class GoalsAdapter extends RecyclerView.Adapter<GoalsAdapter.GoalsViewHol
             return new GoalsViewHolder(itemHomeTaskBinding.getRoot());
         } else {
             itemGoalBinding = DataBindingUtil.inflate(layoutInflater, R.layout.item_goal, parent, false);
+
             return new GoalsViewHolder(itemGoalBinding.getRoot());
         }
     }
@@ -56,7 +69,7 @@ public class GoalsAdapter extends RecyclerView.Adapter<GoalsAdapter.GoalsViewHol
     }
 
     @Override
-    public void onBindViewHolder(@NonNull GoalsViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final GoalsViewHolder holder, int position) {
         Goal goal = goals.get(holder.getAdapterPosition());
         holder.title.setText(goal.getTitle() != null ? goal.getTitle() : "");
         holder.description.setText(goal.getDescription() != null ? goal.getDescription() : "");
@@ -69,6 +82,22 @@ public class GoalsAdapter extends RecyclerView.Adapter<GoalsAdapter.GoalsViewHol
         if (!isHome) {
             holder.startTime.append(goal.getStartTime() != null ? goal.getStartTime() : "");
             holder.dueDate.append(goal.getDueTime() != null ? goal.getDueTime() : "");
+            itemGoalBinding.edit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (addGoalDialogFragment != null && token != null && apiCalls != null) {
+                        addGoalDialogFragment.initApiCalls(token, apiCalls, true, goals.get(holder.getAdapterPosition()));
+                        addGoalDialogFragment.show(((AppCompatActivity) activity).getSupportFragmentManager(), null);
+                    }
+                }
+            });
+
+            itemGoalBinding.delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                }
+            });
         }
     }
 

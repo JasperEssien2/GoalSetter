@@ -46,6 +46,14 @@ public class AuthenticationActivity extends AppCompatActivity implements Authent
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        binding
+                .authenticationViewPager
+                .setCurrentItem(1);
+    }
+
+    @Override
     public void signUpButtonClicked(boolean signUp, @Nullable User user, @Nullable String password) {
         if (!signUp)
             binding

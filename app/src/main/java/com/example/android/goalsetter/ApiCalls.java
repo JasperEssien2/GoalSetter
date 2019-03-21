@@ -198,6 +198,35 @@ public class ApiCalls {
     }
 
     /**
+     * This method task is to add goals to the api database
+     *
+     * @param token a string of the user's token
+     * @param goal  the goal object to add
+     */
+    public void editGoal(final String token, final Goal goal) {
+        apiInterface.editGoal(token, goal.getId(), goal.getTitle(), goal.getDescription(),
+                goal.getStartTime(), goal.getDueTime(), goal.getLevel())
+                .enqueue(new Callback<GoalModelData>() {
+                    @Override
+                    public void onResponse(Call<GoalModelData> call, Response<GoalModelData> response) {
+                        Log.e(TAG, "onResponse() addGoal --------------- " + response.raw().toString());
+                        Log.e(TAG, "token --------------- " + token);
+                        if (response.body() == null)
+                            goalsApiCallback.goalListEdited(false);
+                        else goalsApiCallback.goalListEdited(true);
+                    }
+
+                    @Override
+                    public void onFailure(Call<GoalModelData> call, Throwable t) {
+                        //This will help it to keep trying when it fails
+                        ApiCalls.this.editGoal(token, goal);
+                        goalsApiCallback.goalListEdited(false);
+                        Log.e(TAG, "onFaliure() adding goals  " + t.getMessage());
+                    }
+                });
+    }
+
+    /**
      * This method task is to get all the user's goal in the database
      *
      * @param token the string token of the user
