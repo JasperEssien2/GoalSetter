@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -29,11 +31,12 @@ import androidx.fragment.app.Fragment;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SignUpFragment extends Fragment implements ApiCallsCallback {
+public class SignUpFragment extends Fragment implements ApiCallsCallback, AdapterView.OnItemSelectedListener {
 
     private FragmentSignUpBinding binding;
     private AuthenticationViewPagerCallbacks callbacks;
     private ApiCalls apiCalls = new ApiCalls(this);
+    private String acoountType;
 
     public SignUpFragment() {
         // Required empty public constructor
@@ -45,6 +48,13 @@ public class SignUpFragment extends Fragment implements ApiCallsCallback {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_sign_up, container, false);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
+                R.array.account_types, android.R.layout.simple_spinner_item);
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        binding.accountTypeSpinner.setAdapter(adapter);
+        binding.accountTypeSpinner.setOnItemSelectedListener(this);
         Glide
                 .with(this)
                 .load(R.drawable.goal_background)
@@ -160,7 +170,7 @@ public class SignUpFragment extends Fragment implements ApiCallsCallback {
         users.setEmailAddress(getTextFromEditText(binding.emailEdditext));
         users.setPassword(getTextFromEditText(binding.passwordEdittext));
         users.setConfirmPassword(getTextFromEditText(binding.passwordConfirmEdittext));
-
+        users.setAccount_type(acoountType);
         return users;
     }
 
@@ -195,6 +205,16 @@ public class SignUpFragment extends Fragment implements ApiCallsCallback {
 
     @Override
     public void imageUploaded() {
+
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        acoountType = getResources().getStringArray(R.array.account_types)[i];
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
 
     }
 }

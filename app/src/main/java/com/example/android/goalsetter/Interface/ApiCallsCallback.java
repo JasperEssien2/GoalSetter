@@ -35,4 +35,5 @@ public interface ApiCallsCallback {
     void updateProfile(ProfileModelData.ProfileModelResponse profileModelResponse);
 
     void imageUploaded();
+
 }

@@ -10,16 +10,24 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.android.goalsetter.Adapters.GoalsAdapter;
 import com.example.android.goalsetter.ApiCalls;
+import com.example.android.goalsetter.Constant.BundleConstants;
 import com.example.android.goalsetter.Interface.ApiCallsCallback;
+import com.example.android.goalsetter.Models.Goal;
 import com.example.android.goalsetter.Models.ProfileModelData;
 import com.example.android.goalsetter.Models.RegisterResponseDataModel;
 import com.example.android.goalsetter.Models.User;
 import com.example.android.goalsetter.R;
 import com.example.android.goalsetter.databinding.ActivityHomeBinding;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import static com.example.android.goalsetter.Constant.BundleConstants.TOKEN_BUNDLE;
 
@@ -31,6 +39,8 @@ public class HomeActivity extends AppCompatActivity implements ApiCallsCallback 
     private ActivityHomeBinding binding;
     private String token;
     private User user;
+
+    GoalsAdapter adapter = new GoalsAdapter(true, this, new ArrayList<Goal>());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +57,15 @@ public class HomeActivity extends AppCompatActivity implements ApiCallsCallback 
                 token = getIntent().getStringExtra(TOKEN_BUNDLE);
             }
         }
+        setUpRecyclerView();
+        binding.addTaskButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomeActivity.this, GoalActivity.class);
+                intent.putExtra(BundleConstants.TOKEN_BUNDLE, token);
+                startActivity(intent);
+            }
+        });
         binding.editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -80,6 +99,14 @@ public class HomeActivity extends AppCompatActivity implements ApiCallsCallback 
         binding.getRoot();
     }
 
+    /**
+     * This method sets up the home page recent goal recylerview
+     */
+    private void setUpRecyclerView() {
+        binding.recentTaskRecyclerView.setAdapter(adapter);
+        binding.recentTaskRecyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
+        adapter.setGoals(getDummyGoalList());
+    }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -187,10 +214,14 @@ public class HomeActivity extends AppCompatActivity implements ApiCallsCallback 
                 if (user.getUserImage() != null && imageLink != null) {
                     String imageUrl = imageLink + user.getUserImage();
                     if (!imageUrl.isEmpty())
-                        Glide
-                                .with(this)
-                                .load(imageUrl)
-                                .into(binding.userProfileImage);
+                        try {
+                            Glide
+                                    .with(this)
+                                    .load(imageUrl)
+                                    .into(binding.userProfileImage);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                 }
             }
         }
@@ -213,5 +244,15 @@ public class HomeActivity extends AppCompatActivity implements ApiCallsCallback 
         binding.userContact.setEnabled(true);
         binding.userEmail.setEnabled(true);
         binding.userName.setEnabled(true);
+    }
+
+    private List<Goal> getDummyGoalList() {
+        List<Goal> goals = new ArrayList<>();
+        goals.add(new Goal("title", "this is the description", "Easy", "2019-03-20", "2020-03-20"));
+        goals.add(new Goal("title", "this is the description", "Easy", "2019-03-20", "2020-03-20"));
+        goals.add(new Goal("title", "this is the description", "Easy", "2019-03-20", "2020-03-20"));
+        goals.add(new Goal("title", "this is the description", "Easy", "2019-03-20", "2020-03-20"));
+        goals.add(new Goal("title", "this is the description", "Easy", "2019-03-20", "2020-03-20"));
+        return goals;
     }
 }

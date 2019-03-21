@@ -1,5 +1,8 @@
 package com.example.android.goalsetter.Interface;
 
+import com.example.android.goalsetter.Models.Goal;
+import com.example.android.goalsetter.Models.GoalListModelData;
+import com.example.android.goalsetter.Models.GoalModelData;
 import com.example.android.goalsetter.Models.ProfileModelData;
 import com.example.android.goalsetter.Models.RegisterResponseDataModel;
 import com.example.android.goalsetter.Models.User;
@@ -46,8 +49,26 @@ public interface ApiInterface {
 
 
     @Multipart
-    @POST("api/upload")
+    @POST("api/profile/upload")
     Call<ResponseBody> updateProfileImage(@Header("Authorization") String token, @Part MultipartBody.Part file);
+
+
+    @POST("api/goals/create")
+    @Headers("Content-Type: application/x-www-form-urlencoded")
+    @FormUrlEncoded
+    Call<GoalModelData> createGoal(@Header("Authorization") String token,
+                                   @Field("title") String title, @Field("description") String description,
+                                   @Field("begin_date") String begin_date, @Field("due_date") String due_date,
+                                   @Field("level") String level);
+
+    @POST("api/goals/create")
+    @Headers("Content-Type: application/x-www-form-urlencoded")
+    Call<GoalModelData> createGoal(@Header("Authorization") String token,
+                                   @Body Goal goal);
+
+    @GET("api/goals")
+    Call<GoalListModelData> getAllGoals(@Header("Authorization") String token);
+
 
     @POST("api/logout")
     Call<Boolean> logout();

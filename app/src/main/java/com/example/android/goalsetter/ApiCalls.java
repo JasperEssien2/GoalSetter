@@ -8,6 +8,10 @@ import android.util.Log;
 
 import com.example.android.goalsetter.Interface.ApiCallsCallback;
 import com.example.android.goalsetter.Interface.ApiInterface;
+import com.example.android.goalsetter.Interface.GoalsApiCallback;
+import com.example.android.goalsetter.Models.Goal;
+import com.example.android.goalsetter.Models.GoalListModelData;
+import com.example.android.goalsetter.Models.GoalModelData;
 import com.example.android.goalsetter.Models.ProfileModelData;
 import com.example.android.goalsetter.Models.RegisterResponseDataModel;
 import com.example.android.goalsetter.Models.User;
@@ -30,9 +34,16 @@ public class ApiCalls {
     private static final String TAG = ApiCalls.class.getSimpleName();
     ApiInterface apiInterface;
     private ApiCallsCallback callback;
+    private GoalsApiCallback goalsApiCallback;
 
     public ApiCalls(ApiCallsCallback callback) {
         this.callback = callback;
+        apiInterface = ApiClient.getClient()
+                .create(ApiInterface.class);
+    }
+
+    public ApiCalls(GoalsApiCallback callback) {
+        this.goalsApiCallback = callback;
         apiInterface = ApiClient.getClient()
                 .create(ApiInterface.class);
     }
@@ -50,7 +61,7 @@ public class ApiCalls {
 //            accountType = "beam";
 //        else
 //            accountType = "personal";
-        user.setAccount_type("personal");
+//        user.setAccount_type("personal");
 
         apiInterface.register(user.getName(), user.getEmailAddress(), user.getContact(), user.getAccount_type(), user.getPassword(), user.getConfirmPassword())
                 .enqueue(new Callback<RegisterResponseDataModel>() {
@@ -117,6 +128,7 @@ public class ApiCalls {
 //                        User user = response.body();
                         Log.e(TAG, "onResponse() --------------- " + response.raw().toString());
                         Log.e(TAG, "token --------------- " + token);
+
                         if (response.body() != null)
                             callback.profile(response.body().getModelResponse());
                     }
@@ -124,6 +136,7 @@ public class ApiCalls {
                     @Override
                     public void onFailure(Call<ProfileModelData> call, Throwable t) {
                         Log.e(TAG, "onFailure() --------------- " + t.getMessage());
+                        ApiCalls.this.profile(token);
                     }
                 });
     }
@@ -144,6 +157,7 @@ public class ApiCalls {
                         Log.e(TAG, "token --------------- " + token);
                         if (response.body() != null)
                             callback.updateProfile(response.body().getModelResponse());
+                        else callback.updateProfile(null);
                     }
 
                     @Override
@@ -153,6 +167,60 @@ public class ApiCalls {
                 });
     }
 
+
+    /**
+     * This method task is to add goals to the api database
+     *
+     * @param token a string of the user's token
+     * @param goal  the goal object to add
+     */
+    public void addGoal(final String token, final Goal goal) {
+        apiInterface.createGoal(token, goal.getTitle(), goal.getDescription(), goal.getStartTime(), goal.getDueTime(),
+                goal.getLevel())
+                .enqueue(new Callback<GoalModelData>() {
+                    @Override
+                    public void onResponse(Call<GoalModelData> call, Response<GoalModelData> response) {
+                        Log.e(TAG, "onResponse() addGoal --------------- " + response.raw().toString());
+                        Log.e(TAG, "token --------------- " + token);
+                        if (response.body() == null)
+                            goalsApiCallback.goalAdded(null);
+                        else goalsApiCallback.goalAdded(response.body().getModelResponse());
+                    }
+
+                    @Override
+                    public void onFailure(Call<GoalModelData> call, Throwable t) {
+                        //This will help it to keep trying when it fails
+                        ApiCalls.this.addGoal(token, goal);
+                        goalsApiCallback.goalAdded(null);
+                        Log.e(TAG, "onFaliure() adding goals  " + t.getMessage());
+                    }
+                });
+    }
+
+    /**
+     * This method task is to get all the user's goal in the database
+     *
+     * @param token the string token of the user
+     */
+    public void getGoals(final String token) {
+        apiInterface.getAllGoals(token)
+                .enqueue(new Callback<GoalListModelData>() {
+                    @Override
+                    public void onResponse(Call<GoalListModelData> call, Response<GoalListModelData> response) {
+                        Log.e(TAG, "onResponse() getGoals --------------- " + response.raw().toString());
+                        Log.e(TAG, "token --------------- " + token);
+                        goalsApiCallback.goalListGotten(response.body().getModelResponse());
+                    }
+
+                    @Override
+                    public void onFailure(Call<GoalListModelData> call, Throwable t) {
+                        goalsApiCallback.goalListGotten(null);
+                        Log.e(TAG, "onFaliure() get goals  " + t.getMessage());
+                        //This will help it to keep trying when it fails
+                        ApiCalls.this.getGoals(token);
+                    }
+                });
+    }
 
     public void uploadImage(Activity activity, Uri mediaPath, String token) {
         String selectedImagePath = null;
