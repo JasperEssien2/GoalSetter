@@ -222,7 +222,7 @@ public class ApiCalls {
                 });
     }
 
-    public void uploadImage(Activity activity, Uri mediaPath, String token) {
+    public void uploadImage(final Activity activity, final Uri mediaPath, final String token) {
         String selectedImagePath = null;
         Uri selectedImageUri = mediaPath;
         Cursor cursor = activity.getContentResolver().query(
@@ -266,6 +266,7 @@ public class ApiCalls {
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 Log.e(TAG, "onFailure() --------------- " + t.getMessage());
+                ApiCalls.this.uploadImage(activity, mediaPath, token);
             }
         });
     }
