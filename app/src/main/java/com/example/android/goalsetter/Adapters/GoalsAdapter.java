@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.android.goalsetter.ApiCalls;
@@ -70,7 +71,7 @@ public class GoalsAdapter extends RecyclerView.Adapter<GoalsAdapter.GoalsViewHol
 
     @Override
     public void onBindViewHolder(@NonNull final GoalsViewHolder holder, int position) {
-        Goal goal = goals.get(holder.getAdapterPosition());
+        final Goal goal = goals.get(holder.getAdapterPosition());
         holder.title.setText(goal.getTitle() != null ? goal.getTitle() : "");
         holder.description.setText(goal.getDescription() != null ? goal.getDescription() : "");
         if (goal.getLevel().toLowerCase().equals("easy".toLowerCase()))
@@ -82,7 +83,7 @@ public class GoalsAdapter extends RecyclerView.Adapter<GoalsAdapter.GoalsViewHol
         if (!isHome) {
             holder.startTime.append(goal.getStartTime() != null ? goal.getStartTime() : "");
             holder.dueDate.append(goal.getDueTime() != null ? goal.getDueTime() : "");
-            itemGoalBinding.edit.setOnClickListener(new View.OnClickListener() {
+            holder.edit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if (addGoalDialogFragment != null && token != null && apiCalls != null) {
@@ -92,10 +93,11 @@ public class GoalsAdapter extends RecyclerView.Adapter<GoalsAdapter.GoalsViewHol
                 }
             });
 
-            itemGoalBinding.delete.setOnClickListener(new View.OnClickListener() {
+            holder.delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
+                    if (token != null)
+                        apiCalls.deleteGoal(token, goal);
                 }
             });
         }
@@ -109,6 +111,7 @@ public class GoalsAdapter extends RecyclerView.Adapter<GoalsAdapter.GoalsViewHol
     class GoalsViewHolder extends RecyclerView.ViewHolder {
         private TextView title, description, startTime, dueDate;
         private CircleImageView level;
+        private ImageButton edit, delete;
 
         public GoalsViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -123,6 +126,8 @@ public class GoalsAdapter extends RecyclerView.Adapter<GoalsAdapter.GoalsViewHol
                 startTime = itemGoalBinding.startTime;
                 dueDate = itemGoalBinding.dueTime;
                 level = itemGoalBinding.level;
+                edit = itemGoalBinding.edit;
+                delete = itemGoalBinding.delete;
             }
         }
     }

@@ -110,7 +110,14 @@ public class GoalActivity extends AppCompatActivity implements GoalsApiCallback 
 
     @Override
     public void goalListDeleted(boolean isSuccessful) {
-
+        if (isSuccessful) {
+            apiCalls.getGoals(token);
+            Toast.makeText(this, "Item Deleted", Toast.LENGTH_SHORT).show();
+//            dialogFragment.dismiss();
+        } else {
+            Toast.makeText(this, "Delete Failed", Toast.LENGTH_SHORT).show();
+//            dialogFragment.addingGoalFailed();
+        }
     }
 
     @Override

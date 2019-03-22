@@ -227,6 +227,34 @@ public class ApiCalls {
     }
 
     /**
+     * This method task is to add goals to the api database
+     *
+     * @param token a string of the user's token
+     * @param goal  the goal object to add
+     */
+    public void deleteGoal(final String token, final Goal goal) {
+        apiInterface.deleteGoal(token, goal.getId())
+                .enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        Log.e(TAG, "onResponse() deleteGoal --------------- " + response.raw().toString());
+                        Log.e(TAG, "token --------------- " + token);
+                        if (response.body() == null)
+                            goalsApiCallback.goalListDeleted(false);
+                        else goalsApiCallback.goalListDeleted(true);
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        //This will help it to keep trying when it fails
+                        ApiCalls.this.deleteGoal(token, goal);
+                        goalsApiCallback.goalListDeleted(false);
+                        Log.e(TAG, "onFaliure() deleting goals  " + t.getMessage());
+                    }
+                });
+    }
+
+    /**
      * This method task is to get all the user's goal in the database
      *
      * @param token the string token of the user
