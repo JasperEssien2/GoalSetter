@@ -6,7 +6,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clipToPadding="false"
-        app:cardBackgroundColor="#ffffff"
+        app:cardBackgroundColor="#555555"
         app:contentPadding="0dp">
 
         <LinearLayout
@@ -46,8 +46,8 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
                 android:hint="title"
-                android:textColor="#777777"
-                android:textColorHint="#777777"
+                android:textColor="#ffffff"
+                android:textColorHint="#dddddd"
                 app:backgroundTint="@color/colorPrimary" />
 
             <androidx.appcompat.widget.AppCompatEditText
@@ -59,8 +59,8 @@
                 android:gravity="top"
                 android:hint="description"
                 android:minHeight="100dp"
-                android:textColor="#777777"
-                android:textColorHint="#777777"
+                android:textColor="#ffffff"
+                android:textColorHint="#dddddd"
                 app:backgroundTint="@color/colorPrimary" />
 
 
@@ -78,8 +78,8 @@
                     android:layout_weight="1"
                     android:gravity="top"
                     android:hint="start time"
-                    android:textColor="#777777"
-                    android:textColorHint="#777777"
+                    android:textColor="#ffffff"
+                    android:textColorHint="#dddddd"
                     app:backgroundTint="@color/colorPrimary" />
 
                 <androidx.appcompat.widget.AppCompatEditText
@@ -89,8 +89,8 @@
                     android:layout_weight="1"
                     android:gravity="top"
                     android:hint="due time"
-                    android:textColor="#777777"
-                    android:textColorHint="#777777"
+                    android:textColor="#ffffff"
+                    android:textColorHint="#dddddd"
                     app:backgroundTint="@color/colorPrimary" />
 
 
