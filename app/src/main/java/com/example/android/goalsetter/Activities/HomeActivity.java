@@ -184,6 +184,7 @@ public class HomeActivity extends AppCompatActivity implements ApiCallsCallback 
 
     @Override
     public void updateProfile(ProfileModelData.ProfileModelResponse profileModelResponse) {
+        if (profileModelResponse == null) return;
         if (profileModelResponse.isSuccessful()) {
             setUpViewWithData(profileModelResponse);
             Toast.makeText(this, "Profile Updated Succesfully", Toast.LENGTH_SHORT).show();

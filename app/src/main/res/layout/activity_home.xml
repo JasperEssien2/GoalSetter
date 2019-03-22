@@ -5,7 +5,7 @@
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/transparent"
+        android:background="@drawable/goal_background"
         android:orientation="vertical">
 
         <com.google.android.material.appbar.AppBarLayout
@@ -25,7 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:background="#cc000000"
+            android:background="#cc222222"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             tools:context=".MainActivity">
 
