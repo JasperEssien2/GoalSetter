@@ -48,9 +48,9 @@ public class AuthenticationActivity extends AppCompatActivity implements Authent
     @Override
     protected void onResume() {
         super.onResume();
-        binding
-                .authenticationViewPager
-                .setCurrentItem(1);
+//        binding
+//                .authenticationViewPager
+//                .setCurrentItem(1);
     }
 
     @Override
